@@ -7,6 +7,7 @@ const auth = async (req, res, next) => {
     //* decoding user token
     const decodeToken = await admin.auth().verifyIdToken(token);
     if (decodeToken) {
+      req.user = decodeToken;
       return next();
     }
     return res.status(401).json({ msg: "Unauthorized !" });
