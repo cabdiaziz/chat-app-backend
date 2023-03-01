@@ -8,7 +8,7 @@ import apiErrorHandler from "../../framework/middleware/apiErrorHandler.js";
 
 export const login = async (req, res) => {
   try {
-    const { email } = req.user.email;
+    const { email } = req.user;
 
     const user = await loginUserService(
       { findUserByEmail, apiErrorHandler },

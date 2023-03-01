@@ -3,17 +3,23 @@ import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import cors from "cors";
-import http from "http";
+import { createServer } from "http";
 import { Server } from "socket.io";
 
 import connectMongoDB from "./src/framework/config/db.js";
 import { userRoute } from "./src/components/users/index.js";
-import { chatRoute } from "./src/components/chat/index.js";
+import { messageRouter } from "./src/components/messages/index.js";
+import { roomRouter } from "./src/components/chatRooms/index.js";
 
 const app = express();
-const server = http.createServer(app);
+const server = createServer(app);
 
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
 
 dotenv.config();
 connectMongoDB();
@@ -25,10 +31,11 @@ app.use(cors());
 
 //Routes
 app.use("/api/v1/auth", userRoute);
-app.use("/api/v1", chatRoute);
+app.use("/api/v1/messages", messageRouter(io));
+app.use("/api/v1/rooms", roomRouter());
 
 const port = process.env.PORT || 7000;
 
 server.listen(port, () => {
-  console.log("This app is running on http://localhost:7000");
+  console.log("This server is running on http://localhost:7000");
 });
