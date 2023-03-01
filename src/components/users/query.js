@@ -4,7 +4,7 @@ export const createNewUser = async (user) => {
   return await User.create(user);
 };
 
-//if you wanna to deselect field write _field-name in mongoose.
+//if you wanna to deselect field write _field-name into the select method.
 export const findAllUsers = async () => {
   return await User.find({}).select("name email phone");
 };

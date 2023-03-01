@@ -4,13 +4,13 @@ const messageSchema = mongoose.Schema(
   {
     roomName: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: "rooms",
       required: true,
-      ref: "room",
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
       required: "Chatroom is required!",
-      ref: "User",
     },
     message: {
       type: String,

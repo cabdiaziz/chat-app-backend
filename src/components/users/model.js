@@ -19,5 +19,11 @@ const userSchema = mongoose.Schema(
   }
 );
 
+userSchema.virtual("myMessages", {
+  ref: "messages", //relation model name or reference
+  localField: "_id", //where is the relation position is id (_id)
+  foreignField: "user", // relationship collection column name is (user)
+});
+
 const User = mongoose.model("users", userSchema);
 export default User;
