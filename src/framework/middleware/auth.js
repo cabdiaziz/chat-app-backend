@@ -3,7 +3,6 @@ import admin from "../firebase/firebase-config.js";
 
 const auth = async (req, res, next) => {
   try {
-    console.log("authz=", req.headers.authorization);
     if (req.headers.authorization) {
       const token = req.headers.authorization.split(" ")[1];
 

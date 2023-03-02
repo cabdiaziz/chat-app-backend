@@ -14,7 +14,7 @@ import { roomRouter } from "./src/components/chatRooms/index.js";
 const app = express();
 const server = createServer(app);
 
-const io = new Server(server, {
+export const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
     methods: ["GET", "POST"],
@@ -31,8 +31,8 @@ app.use(cors());
 
 //Routes
 app.use("/api/v1/auth", userRoute);
-app.use("/api/v1/messages", messageRouter(io));
-app.use("/api/v1/rooms", roomRouter());
+app.use("/api/v1", messageRouter());
+app.use("/api/v1", roomRouter());
 
 const port = process.env.PORT || 7000;
 
