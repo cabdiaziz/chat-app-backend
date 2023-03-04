@@ -2,18 +2,21 @@ import mongoose from "mongoose";
 
 const messageSchema = mongoose.Schema(
   {
-    roomName: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "rooms",
+    room: {
+      type: String,
+      required: true,
+    },
+    message: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
       required: true,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
-      required: "Chatroom is required!",
-    },
-    message: {
-      type: String,
       required: true,
     },
   },

@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema(
     phone: { type: Number, default: 25261 },
     role: {
       type: String,
-      enum: ["superAdmin", "admin", "user"],
+      enum: ["admin", "user"],
       default: "user",
     },
     status: { type: String, enum: ["active", "blocked"], default: "active" },

@@ -1,5 +1,5 @@
-export { startConnection, sendHelloMessage } from "./controller.js";
+export { startConnection, saveMessage, getAllMessages } from "./controller.js";
 export { messageRouter } from "./routes.js";
-//service
-//query
+export { saveMessageService, getAllMsgService } from "./service.js";
+export { createNewMsg, findAllMessages, findUserByEmail } from "./query.js";
 export { default as Message } from "./model.js";

@@ -9,7 +9,6 @@ import { Server } from "socket.io";
 import connectMongoDB from "./src/framework/config/db.js";
 import { userRoute } from "./src/components/users/index.js";
 import { messageRouter } from "./src/components/messages/index.js";
-import { roomRouter } from "./src/components/chatRooms/index.js";
 
 const app = express();
 const server = createServer(app);
@@ -32,7 +31,6 @@ app.use(cors());
 //Routes
 app.use("/api/v1/auth", userRoute);
 app.use("/api/v1", messageRouter());
-app.use("/api/v1", roomRouter());
 
 const port = process.env.PORT || 7000;
 
