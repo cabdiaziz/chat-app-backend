@@ -20,6 +20,19 @@ export const io = new Server(server, {
   },
 });
 
+io.on("connection", (socket) => {
+  console.log("user-connect");
+
+  socket.on("joinRoom", (room) => {
+    socket.join(room);
+    console.log(`userID : ${socket.id} joined room: ${room}`);
+  });
+
+  socket.on("sendMsg", (data) => {
+    socket.to(data.room).emit("receiveMessage", data);
+  });
+});
+
 dotenv.config();
 connectMongoDB();
 

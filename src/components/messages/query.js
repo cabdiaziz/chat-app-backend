@@ -1,7 +1,6 @@
 import { Message } from "./index.js";
 import { User } from "../users/index.js";
 export const createNewMsg = async ({ message, room, email, user }) => {
-  console.log("query==", { message, room, email, user });
   return await Message.create({ message, room, email, user });
 };
 
