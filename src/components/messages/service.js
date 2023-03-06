@@ -1,25 +1,36 @@
 export const saveMessageService = async (
-  { createNewMsg, findUserByEmail, apiErrorHandler },
+  { createNewMsg, findMessageRoom, updateMessages, apiErrorHandler },
   { data }
 ) => {
   try {
-    if (!data.message || !data.room || !data.email)
+    if (!data.message || !data.room || !data.user)
       return apiErrorHandler(400, "Not allowed empty data.");
 
-    const user = await findUserByEmail(data.email);
-    data.user = user._id;
+    const oldMessages = await findMessageRoom(data.room, data.user);
+    if (oldMessages.length > 0) {
+      // const newMessage = { message: data.message };
+      const msgUpdate = await updateMessages(
+        data.room,
+        data.user,
+        data.message
+      );
 
-    const newMsg = await createNewMsg(data);
-    const { message, room, email } = newMsg;
-    return { message, room, email };
+      console.log("after-Update =", msgUpdate);
+      return msgUpdate;
+    } else {
+      const newMsg = await createNewMsg(data);
+      console.log("new-msg=", newMsg);
+      return newMsg;
+    }
   } catch (err) {
-    return err.message;
+    console.log("Err=", err.message);
+    return apiErrorHandler(400, err.message);
   }
 };
 
-export const getAllMsgService = async ({ findAllMessages }, { email }) => {
+export const getAllMsgService = async ({ findAllMessages }, { userId }) => {
   try {
-    const allMessages = await findAllMessages(email);
+    const allMessages = await findAllMessages(userId);
     return allMessages;
   } catch (err) {
     return err.message;

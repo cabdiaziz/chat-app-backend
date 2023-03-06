@@ -1,14 +1,31 @@
 import { Message } from "./index.js";
 import { User } from "../users/index.js";
-export const createNewMsg = async ({ message, room, email, user }) => {
-  return await Message.create({ message, room, email, user });
+
+export const createNewMsg = async ({ message, room, user }) => {
+  const newMessage = { message };
+  return await Message.create({ messages: newMessage, room, user });
+};
+export const findAllMessages = async (user) => {
+  return await Message.find({ user });
+};
+export const findMessageRoom = async (room, user) => {
+  return await Message.find({ room, user });
+};
+export const updateMessages = async (room, user, updateMessage) => {
+  console.log("room=", room);
+  return await Message.findOneAndUpdate(
+    { room: room, user: user },
+    {
+      $push: { messages: { message: updateMessage } },
+    },
+    {
+      new: true,
+      upsert: true,
+    }
+  );
 };
 
-export const findAllMessages = async (email) => {
-  return await Message.find({ email }).select("message room email");
-};
-
-// user methods
-export const findUserByEmail = async (email) => {
-  return await User.findOne({ email });
+// USER :  find user by uid firebase id
+export const findUserByUid = async (uid) => {
+  return await User.findOne({ uid });
 };

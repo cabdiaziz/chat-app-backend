@@ -6,14 +6,8 @@ const messageSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    message: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
+    messages: { type: Array, default: [] },
+
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
