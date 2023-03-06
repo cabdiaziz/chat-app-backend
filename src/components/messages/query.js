@@ -12,7 +12,6 @@ export const findMessageRoom = async (room, user) => {
   return await Message.find({ room, user });
 };
 export const updateMessages = async (room, user, updateMessage) => {
-  console.log("room=", room);
   return await Message.findOneAndUpdate(
     { room: room, user: user },
     {
