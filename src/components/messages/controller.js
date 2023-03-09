@@ -19,20 +19,7 @@ export const saveMessage = async (req, res) => {
     const user = userId._id;
 
     const data = { message, room, user };
-
-    io.on("connection", (socket) => {
-      socket.on("joinRoom", (room) => {
-        socket.join(room);
-        console.log(`userID : ${socket.id} joined Room : ${room}`);
-      });
-      socket.on("sendMsg", (data) => {
-        console.log("send-msg =", data);
-        socket.to(data.room).emit("receiveMessage", data);
-      });
-      socket.on("disconnect", () => {
-        console.log("disconnect ...");
-      });
-    });
+    console.log("body=", data);
 
     const newMsg = await saveMessageService(
       { createNewMsg, findMessageRoom, updateMessages, apiErrorHandler },

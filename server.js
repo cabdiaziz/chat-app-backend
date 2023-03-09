@@ -11,27 +11,30 @@ import { userRoute } from "./src/components/users/index.js";
 import { messageRouter } from "./src/components/messages/index.js";
 
 const app = express();
-const server = createServer(app);
+const httpServer = createServer(app);
 
-export const io = new Server(server, {
+export const io = new Server(httpServer, {
   cors: {
     origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
 
-// io.on("connection", (socket) => {
-//   console.log("user-connect");
+io.on("connection", (socket) => {
+  console.log("User connection", socket.id);
+  socket.on("joinRoom", (room) => {
+    socket.join(room);
+    console.log(`userID : ${socket.id} joined Room : ${room}`);
+  });
+  socket.on("sendMsg", ({ room, message }) => {
+    console.log("send-msg =", message, "room =", room, "socket", socket.id);
 
-//   socket.on("joinRoom", (room) => {
-//     socket.join(room);
-//     console.log(`userID : ${socket.id} joined room: ${room}`);
-//   });
-
-//   socket.on("sendMsg", (data) => {
-//     socket.to(data.room).emit("receiveMessage", data);
-//   });
-// });
+    socket.to(room).emit("receiveMessage", message);
+  });
+  socket.on("disconnect", () => {
+    console.log("disconnect ...");
+  });
+});
 
 dotenv.config();
 connectMongoDB();
@@ -47,6 +50,6 @@ app.use("/api/v1", messageRouter());
 
 const port = process.env.PORT || 7000;
 
-server.listen(port, () => {
+httpServer.listen(port, () => {
   console.log("This server is running on http://localhost:7000");
 });
